@@ -7,7 +7,10 @@ import java.util.Arrays;
  */
 public class SortUtils {
 
-    public static <E extends Comparable<? super E>> void selectSort(E[] arr) {
+    private SortUtils() {
+    }
+
+    public static void selectSort(Comparable[] arr) {
         SortUtils.selectSort(arr, 0, arr.length - 1);
     }
 
@@ -18,19 +21,13 @@ public class SortUtils {
      * @param startIndex 开始排序的位置（包括此位置的元素）。
      * @param endIndex   结束排序的位置（包括此位置的元素）。
      */
-    public static <E extends Comparable<? super E>> void selectSort(E[] arr, int startIndex, int endIndex) {
+    public static void selectSort(Comparable[] arr, int startIndex, int endIndex) {
 
-        if (startIndex > endIndex) {
-            throw new IllegalArgumentException("startIndex应该小于endIndex！");
+        if (!SortUtils.isLegalArgument(arr.length, startIndex, endIndex)) {
+            throw new IllegalArgumentException("参数不对，请检查");
         }
 
-        if (startIndex == endIndex || startIndex >= arr.length) {
-            return;
-        }
-
-        if (endIndex >= arr.length) {
-            endIndex = arr.length - 1;
-        }
+        endIndex = SortUtils.formatEndIndex(arr.length, endIndex);
 
         int minIndex;
         for (int i = startIndex; i <= endIndex; i++) {
@@ -45,7 +42,38 @@ public class SortUtils {
         }
     }
 
-    private static <E extends Comparable<? super E>> void swap(E[] nums, int firstIndex, int secondIndex) {
+    public static void insertSort(Comparable[] arr) {
+        SortUtils.insertSort(arr, 0, arr.length - 1);
+    }
+
+    /**
+     * 插入排序的优化策略，交换操作比较耗时，通过减少交换来提升插入排序性能。
+     *
+     * @param arr
+     * @param startIndex
+     * @param endIndex
+     */
+    public static void insertSort(Comparable[] arr, int startIndex, int endIndex) {
+
+        if (!SortUtils.isLegalArgument(arr.length, startIndex, endIndex)) {
+            throw new IllegalArgumentException("参数不对，请检查");
+        }
+
+        endIndex = SortUtils.formatEndIndex(arr.length, endIndex);
+
+        for (int i = startIndex + 1; i <= endIndex; i++) {
+
+            Comparable e = arr[i];
+            int j = i;
+            for (; j > startIndex && e.compareTo(arr[j - 1]) < 0; j--) {
+//                    SortUtils.swap(arr, j - 1, j); 不要交换，改为下面的赋值。
+                arr[j] = arr[j - 1];
+            }
+            arr[j] = e;
+        }
+    }
+
+    private static void swap(Object[] nums, int firstIndex, int secondIndex) {
 
         if (firstIndex < 0 || secondIndex < 0 || firstIndex >= nums.length || secondIndex >= nums.length) {
             throw new IllegalArgumentException("交换元素索引必须在数组的合法范围内！");
@@ -54,56 +82,25 @@ public class SortUtils {
         if (firstIndex == secondIndex) {
             return;
         }
-        E temp = nums[firstIndex];
+        Object temp = nums[firstIndex];
         nums[firstIndex] = nums[secondIndex];
         nums[secondIndex] = temp;
     }
 
-    public static <E extends Comparable<? super E>> boolean isSortedAsc(E[] arr) {
-        if (arr == null) {
-            throw new IllegalArgumentException("数组引用不能为null!");
+    private static boolean isLegalArgument(int arrLength, int startIndex, int endIndex) {
+        if (startIndex > endIndex) {
+            return false;
         }
 
-        int maxIndex = arr.length - 1;
-        if (maxIndex == -1) {
-            return true;
-        }
-
-        for (int i = 0; i < maxIndex; i++) {
-            if (arr[i].compareTo(arr[i + 1]) > 0) {
-                return false;
-            }
-        }
-
-        return true;
+        return startIndex != endIndex && startIndex < arrLength;
     }
 
-    public static <E extends Comparable<? super E>> void printArray(E[] arr) {
-        printArray(arr, 0, arr.length - 1);
-    }
+    private static int formatEndIndex(int arrLength, int endIndex) {
 
-    public static <E extends Comparable<? super E>> void printArray(E[] arr, int start, int end) {
-
-        if (arr == null) {
-            System.out.println("null");
-            return;
+        if (endIndex >= arrLength) {
+            return arrLength - 1;
         }
 
-        if (arr.length == 0) {
-            System.out.println("[]");
-        }
-
-        StringBuilder b = new StringBuilder();
-        b.append('[');
-        for (int i = start; ; i++) {
-            b.append(arr[i]);
-            if (i == end) {
-                b.append(']');
-                break;
-            }
-            b.append(", ");
-        }
-
-        System.out.println(b);
+        return endIndex;
     }
 }

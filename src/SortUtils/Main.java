@@ -1,5 +1,7 @@
 package SortUtils;
 
+import java.util.Arrays;
+
 /**
  * @author Chanmoey
  */
@@ -7,12 +9,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int n = 10000;
+        int n = 100000;
+        Integer[] arr = SortTestHelper.getNearlyOrderedArray(n, 10);
+        Integer[] copy = Arrays.copyOf(arr, arr.length);
 
-        Integer[] arr = SortTestHelper.getRandomArray(n, 0, n);
-        SortUtils.printArray(arr);
-        SortUtils.selectSort(arr);
-        SortUtils.printArray(arr, 100, 200);
-        System.out.println(SortUtils.isSortedAsc(arr));
+        SortTestHelper.testSort("SortUtils.SortUtils", "selectSort", arr);
+        SortTestHelper.testSort("SortUtils.SortUtils", "insertSort", copy);
+
+
+
     }
 }
