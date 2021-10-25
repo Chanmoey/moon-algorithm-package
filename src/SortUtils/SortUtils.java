@@ -73,6 +73,33 @@ public class SortUtils {
         }
     }
 
+    public static void bubbleSort(Comparable[] arr) {
+        bubbleSort(arr, 0, arr.length);
+    }
+
+    public static void bubbleSort(Comparable[] arr, int startIndex, int endIndex) {
+
+        if (!SortUtils.isLegalArgument(arr.length, startIndex, endIndex)) {
+            throw new IllegalArgumentException("参数不对，请检查");
+        }
+
+        endIndex = SortUtils.formatEndIndex(arr.length, endIndex);
+
+
+        for (int i = startIndex; i < endIndex; i++) {
+            int j;
+            for (j = i + 1; j <= endIndex; j++) {
+                if (arr[i].compareTo(arr[j]) > 0) {
+                    swap(arr, i, j);
+                }
+            }
+
+            // 前一次确定好的顺序，后一次就不需要再比较了。
+            endIndex = j - 1;
+        }
+
+    }
+
     private static void swap(Object[] nums, int firstIndex, int secondIndex) {
 
         if (firstIndex < 0 || secondIndex < 0 || firstIndex >= nums.length || secondIndex >= nums.length) {

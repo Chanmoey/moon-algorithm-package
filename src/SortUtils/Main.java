@@ -9,14 +9,21 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int n = 100000;
-        Integer[] arr = SortTestHelper.getNearlyOrderedArray(n, 10);
-        Integer[] copy = Arrays.copyOf(arr, arr.length);
+        int n = 10000;
+//        Integer[] select = SortTestHelper.getRandomArray(n, 0, n);
+//        Integer[] insert = Arrays.copyOf(select, select.length);
+//        Integer[] bubble = Arrays.copyOf(select, select.length);
+//        SortTestHelper.testSort("SortUtils.SortUtils", "selectSort", select);
+//        SortTestHelper.testSort("SortUtils.SortUtils", "insertSort", insert);
+//        SortTestHelper.testSort("SortUtils.SortUtils", "bubbleSort", bubble);
 
-        SortTestHelper.testSort("SortUtils.SortUtils", "selectSort", arr);
-        SortTestHelper.testSort("SortUtils.SortUtils", "insertSort", copy);
-
-
-
+        int sortMethods = 3;
+        String[] methodName = {"selectSort", "insertSort", "bubbleSort"};
+        for (int i = 0; i < sortMethods; i++) {
+            int finalI = i;
+            new Thread(() -> {
+                SortTestHelper.testSort("SortUtils.SortUtils", methodName[finalI], SortTestHelper.getRandomArray(n, 0, n));
+            }).start();
+        }
     }
 }
