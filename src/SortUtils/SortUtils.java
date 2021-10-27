@@ -100,6 +100,41 @@ public class SortUtils {
 
     }
 
+    public static void shellSort(Comparable[] arr) {
+        shellSort(arr, 0, arr.length - 1);
+    }
+
+    public static void shellSort (Comparable[] arr, int startIndex, int endIndex) {
+        if (!SortUtils.isLegalArgument(arr.length, startIndex, endIndex)) {
+            throw new IllegalArgumentException("参数不对，请检查");
+        }
+
+        endIndex = SortUtils.formatEndIndex(arr.length, endIndex);
+
+        int n = endIndex - startIndex + 1;
+        int h = 1;
+        while (h < n / 3) {
+            h = 3 * h + 1;
+        }
+
+        while (h >= 1) {
+
+            // h-sort
+            for (int i = h; i <= endIndex; i++) {
+
+                Comparable e = arr[i];
+                int j = i;
+                for (; j >= h && e.compareTo(arr[j - h]) < 0; j -= h) {
+                    arr[j] = arr[j - h];
+                }
+                arr[j] = e;
+            }
+
+            h /= 3;
+        }
+
+    }
+
     private static void swap(Object[] nums, int firstIndex, int secondIndex) {
 
         if (firstIndex < 0 || secondIndex < 0 || firstIndex >= nums.length || secondIndex >= nums.length) {
