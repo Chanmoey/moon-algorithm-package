@@ -25,7 +25,7 @@ public class SortTestHelper {
         return arr;
     }
 
-    public static void testSort(String sortClassName, String methodName, Comparable[] arr) {
+    public static double testSort(String sortClassName, String methodName, Comparable[] arr) {
 
         try {
             Class<?> sortClass = Class.forName(sortClassName);
@@ -39,11 +39,14 @@ public class SortTestHelper {
                 throw new AssertionError("排序失败");
             }
 
-            System.out.println(sortClass.getSimpleName() + "-" + methodName + " : " + (endTime - startTime) + "ms");
+            System.out.println(sortClass.getSimpleName() + "-" + methodName + " : " + (endTime - startTime) / 1000.0 + "s");
+            return (endTime - startTime) / 1000.0;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return -1.0;
     }
 
     public static boolean isSortedAsc(Comparable[] arr) {

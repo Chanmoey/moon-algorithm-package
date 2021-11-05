@@ -7,6 +7,12 @@ import java.util.Arrays;
  */
 public class SortUtils {
 
+    private static int minSplitLength = 15;
+
+    public static void setMinSplitLength(int minSplitLength) {
+        SortUtils.minSplitLength = minSplitLength;
+    }
+
     private SortUtils() {
     }
 
@@ -23,7 +29,7 @@ public class SortUtils {
      */
     public static void selectSort(Comparable[] arr, int startIndex, int endIndex) {
 
-        if (!SortUtils.isLegalArgument(arr.length, startIndex, endIndex)) {
+        if (SortUtils.isNotLegalArgument(arr.length, startIndex, endIndex)) {
             throw new IllegalArgumentException("参数不对，请检查");
         }
 
@@ -55,7 +61,7 @@ public class SortUtils {
      */
     public static void insertSort(Comparable[] arr, int startIndex, int endIndex) {
 
-        if (!SortUtils.isLegalArgument(arr.length, startIndex, endIndex)) {
+        if (SortUtils.isNotLegalArgument(arr.length, startIndex, endIndex)) {
             throw new IllegalArgumentException("参数不对，请检查");
         }
 
@@ -79,7 +85,7 @@ public class SortUtils {
 
     public static void bubbleSort(Comparable[] arr, int startIndex, int endIndex) {
 
-        if (!SortUtils.isLegalArgument(arr.length, startIndex, endIndex)) {
+        if (SortUtils.isNotLegalArgument(arr.length, startIndex, endIndex)) {
             throw new IllegalArgumentException("参数不对，请检查");
         }
 
@@ -104,8 +110,8 @@ public class SortUtils {
         shellSort(arr, 0, arr.length - 1);
     }
 
-    public static void shellSort (Comparable[] arr, int startIndex, int endIndex) {
-        if (!SortUtils.isLegalArgument(arr.length, startIndex, endIndex)) {
+    public static void shellSort(Comparable[] arr, int startIndex, int endIndex) {
+        if (SortUtils.isNotLegalArgument(arr.length, startIndex, endIndex)) {
             throw new IllegalArgumentException("参数不对，请检查");
         }
 
@@ -135,6 +141,153 @@ public class SortUtils {
 
     }
 
+    public static void mergeSort(Comparable[] arr) {
+        mergeSort(arr, 0, arr.length - 1);
+    }
+
+    public static void mergeSortBU(Comparable[] arr) {
+        mergeSortBU(arr, 0, arr.length);
+    }
+
+    public static void mergeSort(Comparable[] arr, int startIndex, int endIndex) {
+
+        if ((endIndex - startIndex) <= minSplitLength) {
+            insertSort(arr, startIndex, endIndex);
+            return;
+        }
+
+        int mid = startIndex + (endIndex - startIndex) / 2;
+        mergeSort(arr, startIndex, mid);
+        mergeSort(arr, mid + 1, endIndex);
+        if (arr[mid].compareTo(arr[mid + 1]) > 0) {
+            merge(arr, startIndex, mid, endIndex);
+        }
+    }
+
+    public static void mergeSortBU(Comparable[] arr, int startIndex, int endIndex) {
+        if (SortUtils.isNotLegalArgument(arr.length, startIndex, endIndex)) {
+            throw new IllegalArgumentException("参数不对，请检查");
+        }
+
+        endIndex = SortUtils.formatEndIndex(arr.length, endIndex);
+
+        for (int sz = 1; sz <= endIndex + 1; sz += sz) {
+            for (int i = 0; i + sz <= endIndex; i += sz + sz) {
+                if (arr[i + sz - 1].compareTo(arr[i + sz]) > 0) {
+                    merge(arr, i, i + sz - 1, Math.min(i + sz + sz - 1, endIndex));
+                }
+            }
+        }
+    }
+
+    private static void merge(Comparable[] arr, int startIndex, int mid, int endIndex) {
+
+        Comparable[] temp = new Comparable[endIndex - startIndex + 1];
+        int i = startIndex, j = mid + 1, index = 0;
+        while (i <= mid && j <= endIndex) {
+            if (arr[i].compareTo(arr[j]) < 0) {
+                temp[index++] = arr[i++];
+                continue;
+            }
+            temp[index++] = arr[j++];
+        }
+
+        while (i <= mid) {
+            temp[index++] = arr[i++];
+        }
+
+        while (j <= endIndex) {
+            temp[index++] = arr[j++];
+        }
+
+        i = startIndex;
+        for (index = 0; index < temp.length; index++) {
+            arr[i++] = temp[index];
+        }
+
+    }
+
+    public static void quickSort(Comparable[] arr) {
+        quickSort(arr, 0, arr.length - 1);
+    }
+
+    public static void quickSort(Comparable[] arr, int startIndex, int endIndex) {
+
+        if (startIndex >= endIndex) {
+            return;
+        }
+
+        if ((endIndex - startIndex) <= minSplitLength) {
+            insertSort(arr, startIndex, endIndex);
+            return;
+        }
+
+        int p = partition(arr, startIndex, endIndex);
+        quickSort(arr, startIndex, p - 1);
+        quickSort(arr, p + 1, endIndex);
+    }
+
+    private static int partition(Comparable[] arr, int startIndex, int endIndex) {
+
+        swap(arr, startIndex, (int) (Math.random() * (endIndex - startIndex + 1)) + startIndex);
+        Comparable v = arr[startIndex];
+
+        //[startIndex + 1...i) <= e, (j...endIndex] >= e 。
+        int i = startIndex + 1, j = endIndex;
+        while (true) {
+            while (i <= endIndex && arr[i].compareTo(v) < 0) {
+                i++;
+            }
+            while (j >= startIndex + 1 && arr[j].compareTo(v) > 0) {
+                j--;
+            }
+            if (i > j) {
+                break;
+            }
+            swap(arr, i, j);
+            i++;
+            j--;
+        }
+        swap(arr, startIndex, j);
+        return j;
+    }
+
+    public static void quickSort3Ways(Comparable[] arr) {
+        quickSort3Ways(arr, 0, arr.length - 1);
+    }
+
+    public static void quickSort3Ways(Comparable[] arr, int startIndex, int endIndex) {
+
+        if (startIndex >= endIndex) {
+            return;
+        }
+
+        if (endIndex - startIndex <= minSplitLength) {
+            insertSort(arr, startIndex, endIndex);
+        }
+
+        swap(arr, startIndex, (int) (Math.random() * (endIndex - startIndex + 1)) + startIndex);
+        Comparable v = arr[startIndex];
+
+        // arr[startIndex + 1 ... lt] < v, arr[gt ... endIndex] > v.
+        // arr[lt + 1 ... i] == v
+        int lt = startIndex, gt = endIndex + 1;
+        int i = startIndex + 1;
+        while (i < gt) {
+            if (arr[i].compareTo(v) < 0) {
+                swap(arr, i++, ++lt);
+            } else if (arr[i].compareTo(v) > 0) {
+                swap(arr, i, --gt);
+            } else {
+                i++;
+            }
+        }
+
+        swap(arr, startIndex, lt);
+        quickSort3Ways(arr, startIndex, lt - 1);
+        quickSort3Ways(arr, gt, endIndex);
+    }
+
     private static void swap(Object[] nums, int firstIndex, int secondIndex) {
 
         if (firstIndex < 0 || secondIndex < 0 || firstIndex >= nums.length || secondIndex >= nums.length) {
@@ -149,12 +302,12 @@ public class SortUtils {
         nums[secondIndex] = temp;
     }
 
-    private static boolean isLegalArgument(int arrLength, int startIndex, int endIndex) {
+    private static boolean isNotLegalArgument(int arrLength, int startIndex, int endIndex) {
         if (startIndex > endIndex) {
-            return false;
+            return true;
         }
 
-        return startIndex != endIndex && startIndex < arrLength;
+        return startIndex == endIndex || startIndex >= arrLength;
     }
 
     private static int formatEndIndex(int arrLength, int endIndex) {
