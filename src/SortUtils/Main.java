@@ -1,8 +1,6 @@
 package SortUtils;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Chanmoey
@@ -12,13 +10,15 @@ public class Main {
     public static void main(String[] args) {
 
 
-        int n = 1000000;
-
-        SortTestHelper.testSort("SortUtils.SortUtils", "mergeSort", SortTestHelper.getNearlyOrderedArray(n, 10));
-        SortTestHelper.testSort("SortUtils.SortUtils", "shellSort", SortTestHelper.getNearlyOrderedArray(n, 10));
-        SortTestHelper.testSort("SortUtils.SortUtils", "mergeSortBU", SortTestHelper.getNearlyOrderedArray(n, 10));
-        SortTestHelper.testSort("SortUtils.SortUtils", "quickSort", SortTestHelper.getNearlyOrderedArray(n, 10));
-        SortTestHelper.testSort("SortUtils.SortUtils", "quickSort3Ways", SortTestHelper.getNearlyOrderedArray(n, 10));
+        int n = 100000;
+        SortTestHelper.testSort("SortUtils.SortUtils", "selectSort", SortTestHelper.getRandomArray(n, 0, n));
+        SortTestHelper.testSort("SortUtils.SortUtils", "insertSort", SortTestHelper.getRandomArray(n, 0, n));
+        SortTestHelper.testSort("SortUtils.SortUtils", "bubbleSort", SortTestHelper.getRandomArray(n, 0, n));
+        SortTestHelper.testSort("SortUtils.SortUtils", "shellSort", SortTestHelper.getRandomArray(n, 0, n));
+        SortTestHelper.testSort("SortUtils.SortUtils", "mergeSort", SortTestHelper.getRandomArray(n, 0, n));
+        SortTestHelper.testSort("SortUtils.SortUtils", "mergeSortBU", SortTestHelper.getRandomArray(n, 0, n));
+        SortTestHelper.testSort("SortUtils.SortUtils", "quickSort", SortTestHelper.getRandomArray(n, 0, n));
+        SortTestHelper.testSort("SortUtils.SortUtils", "quickSort3Ways", SortTestHelper.getRandomArray(n, 0, n));
 
         // 这一段，在一个新的线程中测试排序算法。由于CPU对线程的调度，每个线程运行的效率变低，不过总体是会提高？没测试过.
 //        String[] methodName = {"selectSort", "insertSort", "bubbleSort", "shellSort", "mergeSort", "mergeSortBU", "quickSort"};

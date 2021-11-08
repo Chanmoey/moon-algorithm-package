@@ -25,7 +25,7 @@ public class SortTestHelper {
         return arr;
     }
 
-    public static double testSort(String sortClassName, String methodName, Comparable[] arr) {
+    public static <T extends Comparable<T>> void testSort(String sortClassName, String methodName, T[] arr) {
 
         try {
             Class<?> sortClass = Class.forName(sortClassName);
@@ -40,16 +40,14 @@ public class SortTestHelper {
             }
 
             System.out.println(sortClass.getSimpleName() + "-" + methodName + " : " + (endTime - startTime) / 1000.0 + "s");
-            return (endTime - startTime) / 1000.0;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return -1.0;
     }
 
-    public static boolean isSortedAsc(Comparable[] arr) {
+    public static <T extends Comparable<T>> boolean isSortedAsc(T[] arr) {
         if (arr == null) {
             throw new IllegalArgumentException("数组引用不能为null!");
         }

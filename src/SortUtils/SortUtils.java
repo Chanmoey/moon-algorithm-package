@@ -1,7 +1,5 @@
 package SortUtils;
 
-import java.util.Arrays;
-
 /**
  * @author Chanmoey
  */
@@ -16,7 +14,7 @@ public class SortUtils {
     private SortUtils() {
     }
 
-    public static void selectSort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void selectSort(T[] arr) {
         SortUtils.selectSort(arr, 0, arr.length - 1);
     }
 
@@ -27,7 +25,7 @@ public class SortUtils {
      * @param startIndex 开始排序的位置（包括此位置的元素）。
      * @param endIndex   结束排序的位置（包括此位置的元素）。
      */
-    public static void selectSort(Comparable[] arr, int startIndex, int endIndex) {
+    public static <T extends Comparable<T>> void selectSort(T[] arr, int startIndex, int endIndex) {
 
         if (SortUtils.isNotLegalArgument(arr.length, startIndex, endIndex)) {
             throw new IllegalArgumentException("参数不对，请检查");
@@ -48,7 +46,7 @@ public class SortUtils {
         }
     }
 
-    public static void insertSort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void insertSort(T[] arr) {
         SortUtils.insertSort(arr, 0, arr.length - 1);
     }
 
@@ -59,7 +57,7 @@ public class SortUtils {
      * @param startIndex
      * @param endIndex
      */
-    public static void insertSort(Comparable[] arr, int startIndex, int endIndex) {
+    public static <T extends Comparable<T>> void insertSort(T[] arr, int startIndex, int endIndex) {
 
         if (SortUtils.isNotLegalArgument(arr.length, startIndex, endIndex)) {
             throw new IllegalArgumentException("参数不对，请检查");
@@ -69,7 +67,7 @@ public class SortUtils {
 
         for (int i = startIndex + 1; i <= endIndex; i++) {
 
-            Comparable e = arr[i];
+            T e = arr[i];
             int j = i;
             for (; j > startIndex && e.compareTo(arr[j - 1]) < 0; j--) {
 //                    SortUtils.swap(arr, j - 1, j); 不要交换，改为下面的赋值。
@@ -79,11 +77,11 @@ public class SortUtils {
         }
     }
 
-    public static void bubbleSort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void bubbleSort(T[] arr) {
         bubbleSort(arr, 0, arr.length);
     }
 
-    public static void bubbleSort(Comparable[] arr, int startIndex, int endIndex) {
+    public static <T extends Comparable<T>> void bubbleSort(T[] arr, int startIndex, int endIndex) {
 
         if (SortUtils.isNotLegalArgument(arr.length, startIndex, endIndex)) {
             throw new IllegalArgumentException("参数不对，请检查");
@@ -106,11 +104,11 @@ public class SortUtils {
 
     }
 
-    public static void shellSort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void shellSort(T[] arr) {
         shellSort(arr, 0, arr.length - 1);
     }
 
-    public static void shellSort(Comparable[] arr, int startIndex, int endIndex) {
+    public static <T extends Comparable<T>> void shellSort(T[] arr, int startIndex, int endIndex) {
         if (SortUtils.isNotLegalArgument(arr.length, startIndex, endIndex)) {
             throw new IllegalArgumentException("参数不对，请检查");
         }
@@ -128,7 +126,7 @@ public class SortUtils {
             // h-sort
             for (int i = h; i <= endIndex; i++) {
 
-                Comparable e = arr[i];
+                T e = arr[i];
                 int j = i;
                 for (; j >= h && e.compareTo(arr[j - h]) < 0; j -= h) {
                     arr[j] = arr[j - h];
@@ -141,15 +139,15 @@ public class SortUtils {
 
     }
 
-    public static void mergeSort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void mergeSort(T[] arr) {
         mergeSort(arr, 0, arr.length - 1);
     }
 
-    public static void mergeSortBU(Comparable[] arr) {
+    public static <T extends Comparable<T>> void mergeSortBU(T[] arr) {
         mergeSortBU(arr, 0, arr.length);
     }
 
-    public static void mergeSort(Comparable[] arr, int startIndex, int endIndex) {
+    public static <T extends Comparable<T>> void mergeSort(T[] arr, int startIndex, int endIndex) {
 
         if ((endIndex - startIndex) <= minSplitLength) {
             insertSort(arr, startIndex, endIndex);
@@ -164,7 +162,7 @@ public class SortUtils {
         }
     }
 
-    public static void mergeSortBU(Comparable[] arr, int startIndex, int endIndex) {
+    public static <T extends Comparable<T>> void mergeSortBU(T[] arr, int startIndex, int endIndex) {
         if (SortUtils.isNotLegalArgument(arr.length, startIndex, endIndex)) {
             throw new IllegalArgumentException("参数不对，请检查");
         }
@@ -180,9 +178,10 @@ public class SortUtils {
         }
     }
 
-    private static void merge(Comparable[] arr, int startIndex, int mid, int endIndex) {
+    @SuppressWarnings("unchecked")
+    private static <T extends Comparable<T>> void merge(T[] arr, int startIndex, int mid, int endIndex) {
 
-        Comparable[] temp = new Comparable[endIndex - startIndex + 1];
+        T[] temp = (T[]) new Comparable[endIndex - startIndex + 1];
         int i = startIndex, j = mid + 1, index = 0;
         while (i <= mid && j <= endIndex) {
             if (arr[i].compareTo(arr[j]) < 0) {
@@ -207,11 +206,11 @@ public class SortUtils {
 
     }
 
-    public static void quickSort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void quickSort(T[] arr) {
         quickSort(arr, 0, arr.length - 1);
     }
 
-    public static void quickSort(Comparable[] arr, int startIndex, int endIndex) {
+    public static <T extends Comparable<T>> void quickSort(T[] arr, int startIndex, int endIndex) {
 
         if (startIndex >= endIndex) {
             return;
@@ -227,10 +226,10 @@ public class SortUtils {
         quickSort(arr, p + 1, endIndex);
     }
 
-    private static int partition(Comparable[] arr, int startIndex, int endIndex) {
+    private static <T extends Comparable<T>> int partition(T[] arr, int startIndex, int endIndex) {
 
         swap(arr, startIndex, (int) (Math.random() * (endIndex - startIndex + 1)) + startIndex);
-        Comparable v = arr[startIndex];
+        T v = arr[startIndex];
 
         //[startIndex + 1...i) <= e, (j...endIndex] >= e 。
         int i = startIndex + 1, j = endIndex;
@@ -252,11 +251,11 @@ public class SortUtils {
         return j;
     }
 
-    public static void quickSort3Ways(Comparable[] arr) {
+    public static <T extends Comparable<T>> void quickSort3Ways(T[] arr) {
         quickSort3Ways(arr, 0, arr.length - 1);
     }
 
-    public static void quickSort3Ways(Comparable[] arr, int startIndex, int endIndex) {
+    public static <T extends Comparable<T>> void quickSort3Ways(T[] arr, int startIndex, int endIndex) {
 
         if (startIndex >= endIndex) {
             return;
@@ -267,7 +266,7 @@ public class SortUtils {
         }
 
         swap(arr, startIndex, (int) (Math.random() * (endIndex - startIndex + 1)) + startIndex);
-        Comparable v = arr[startIndex];
+        T v = arr[startIndex];
 
         // arr[startIndex + 1 ... lt] < v, arr[gt ... endIndex] > v.
         // arr[lt + 1 ... i] == v
