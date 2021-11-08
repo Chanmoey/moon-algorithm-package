@@ -1,5 +1,7 @@
 package SortUtils;
 
+import MapHeap.MaxHeap;
+
 /**
  * @author Chanmoey
  */
@@ -285,6 +287,13 @@ public class SortUtils {
         swap(arr, startIndex, lt);
         quickSort3Ways(arr, startIndex, lt - 1);
         quickSort3Ways(arr, gt, endIndex);
+    }
+
+    public static <T extends Comparable<T>> void heapSort(T[] arr) {
+        MaxHeap<T> maxHeap = new MaxHeap<>(arr);
+        for (int i = arr.length - 1; i >= 0; i--) {
+            arr[i] = maxHeap.removeMax();
+        }
     }
 
     private static void swap(Object[] nums, int firstIndex, int secondIndex) {

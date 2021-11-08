@@ -1,14 +1,12 @@
 package MapHeap;
 
-import java.util.Arrays;
-
 /**
  * @author Chanmoey
  */
 public class Main {
 
     public static void main(String[] args) {
-        MaxHeap<Integer> maxHeap = new MaxHeap<>(100, Integer.class);
+        MaxHeap<Integer> maxHeap = new MaxHeap<>(100);
 
 
         for (int i = 0; i < 100; i++) {
@@ -17,7 +15,7 @@ public class Main {
         System.out.print(maxHeap);
 
         while (!maxHeap.isEmpty()) {
-            System.out.print(maxHeap.removeFrist() + "->");
+            System.out.print(maxHeap.removeMax() + "->");
         }
     }
 }

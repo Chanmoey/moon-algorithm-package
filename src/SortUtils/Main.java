@@ -19,6 +19,7 @@ public class Main {
         SortTestHelper.testSort("SortUtils.SortUtils", "mergeSortBU", SortTestHelper.getRandomArray(n, 0, n));
         SortTestHelper.testSort("SortUtils.SortUtils", "quickSort", SortTestHelper.getRandomArray(n, 0, n));
         SortTestHelper.testSort("SortUtils.SortUtils", "quickSort3Ways", SortTestHelper.getRandomArray(n, 0, n));
+        SortTestHelper.testSort("SortUtils.SortUtils", "heapSort", SortTestHelper.getRandomArray(n, 0, n));
 
         // 这一段，在一个新的线程中测试排序算法。由于CPU对线程的调度，每个线程运行的效率变低，不过总体是会提高？没测试过.
 //        String[] methodName = {"selectSort", "insertSort", "bubbleSort", "shellSort", "mergeSort", "mergeSortBU", "quickSort"};

@@ -14,14 +14,26 @@ public class MaxHeap<E extends Comparable<E>> {
     private static final int TWO = 2;
 
     @SuppressWarnings("unchecked")
-    public MaxHeap(int capacity, Class<E> eClass) {
-        this.data = (E[]) Array.newInstance(eClass, capacity + 1);
+    public MaxHeap(int capacity) {
+        this.data = (E[]) new Comparable[capacity + 1];
         this.size = 0;
         this.capacity = capacity;
     }
 
-    public MaxHeap(Class<E> eClass) {
-        this(16, eClass);
+    public MaxHeap() {
+        this(16);
+    }
+
+    @SuppressWarnings("unchecked")
+    public MaxHeap(E[] arr) {
+        this.data = (E[]) new Comparable[arr.length + 1];
+        this.capacity = arr.length;
+        System.arraycopy(arr, 0, this.data, 1, arr.length);
+        this.size = arr.length;
+
+        for (int i = this.size / TWO; i >= 1; i--) {
+            this.shiftDown(i);
+        }
     }
 
     public boolean isEmpty() {
@@ -49,7 +61,7 @@ public class MaxHeap<E extends Comparable<E>> {
         this.data[index] = e;
     }
 
-    public E removeFrist() {
+    public E removeMax() {
         assert this.size > 0;
         E e = this.data[1];
         this.swap(this.data, 1, this.size);
